@@ -1,0 +1,11 @@
+*.png
+*.csv
+**/Data
+**/__pycache__
+**/Plots
+**/Papers
+**/Presentation Data
+**/Poster_Slides
+**/Tests
+**/Jobs
+
