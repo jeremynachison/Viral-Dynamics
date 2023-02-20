@@ -8,5 +8,6 @@
 **/Poster_Slides
 **/Tests
 **/Jobs
-.DS_Store
+*.DS_Store
 
+.DS_Store
