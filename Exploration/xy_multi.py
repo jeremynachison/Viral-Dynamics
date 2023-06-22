@@ -41,12 +41,12 @@ xy_multi.columns = xy_multi.columns.rename("xy_sols", level=1)
 
 
 for col_id in param_df["id"]:
-    prev_step = tive_multi[col_id,"I"].shift(fill_value=0)
-    next_step = tive_multi[col_id,"I"].shift(fill_value=0,periods = -1)
-    current = tive_multi[col_id,"I"]
+    prev_step = tive_multi[col_id,"V"].shift(fill_value=0)
+    next_step = tive_multi[col_id,"V"].shift(fill_value=0,periods = -1)
+    current = tive_multi[col_id,"V"]
     peak = (current > prev_step) & (current > next_step) & (current > 100)
     x = pd.Series(tive_multi["time"][peak][1:].iloc[:,0])
-    y = tive_multi[col_id,"I"][peak][1:]
+    y = tive_multi[col_id,"V"][peak][1:]
     d = {'x':x, 'y':y}
     addition = pd.DataFrame(data = d)
     xy = pd.concat([xy.loc[:,["x","y"]], addition], ignore_index = True)

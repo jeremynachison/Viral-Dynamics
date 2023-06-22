@@ -11,7 +11,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import scipy as sp
 from scipy.integrate import solve_ivp
-plt.rcParams.update(plt.rcParamsDefault)
+plt.rcParams["figure.figsize"] = (4,6)
+plt.rcParams.update({'font.size': 16})
 
 ### This file a sample of an individual TIVE model using scipy's solve_ivp
 
@@ -19,19 +20,16 @@ plt.rcParams.update(plt.rcParamsDefault)
 N = 6e4
 i01, v_0  = 1, 1e-5
 t0 = N
-z0 = 0
 e0 = 0
 init1 = (t0,i01,v_0,e0)
 
 delta = 0.8
+p = 4.5e2
 c = 5e-2
 beta = 2e-5
-s = 10
 d = 0.065
 dX = 1e-4
 r = 0.01
-n = 200
-p = 4.5e2
 alpha = 1.2
 
 # Defining the diff eq
@@ -80,17 +78,22 @@ twin2 = ax.twinx()
 twin3 = ax.twinx()
 
 
-twin2.spines.right.set_position(("axes", 1.2))
-twin3.spines.right.set_position(("axes", 1.4))
+twin2.spines.right.set_position(("axes", 1.33))
+twin3.spines.right.set_position(("axes", 1.56))
 
 transp = 0.8
 width = 3
-p1, = ax.plot(t1,t_m,"dodgerblue" , label="Target Cells", alpha = transp, linewidth = width)
-p2, = twin1.plot(t1, i1,"orangered",label="Infective", alpha = transp, linewidth = width)
-p3, = twin2.plot(t1,v,color="limegreen",label="Viral Load", alpha = transp, linewidth = width)
-p4, = twin3.plot(t1,e1,color = "purple",label="Immune Response", alpha = transp, linewidth = width)
+p1, = ax.plot(t1,t_m,"dodgerblue" , 
+              label="Target Cells", alpha = transp, linewidth = width)
+p2, = twin1.plot(t1, i1,"orangered",
+                 label="Number of Infective",
+                 alpha = transp, linewidth = width)
+p3, = twin2.plot(t1,v,color="limegreen",
+                 label="Viral Load", alpha = transp, linewidth = width)
+p4, = twin3.plot(t1,e1,color = "purple",
+                 label="Immune Response", alpha = transp, linewidth = width)
 
-ax.set_xlim(0,100)
+ax.set_xlim(0,50)
 ax.set_ylim(0,np.max(t_m))
 twin1.set_ylim(0,np.max(t_m))
 twin2.set_ylim(0,np.max(v))
@@ -116,6 +119,6 @@ twin3.tick_params(axis="y",colors=p4.get_color(), **tkw)
 
 ax.tick_params(axis="x", **tkw)
 
-ax.legend(handles=[p1, p2, p3, p4])
+ax.legend(handles=[p1, p2, p3, p4], prop={"size":12})
 plt.title("Sample TIVE Model")
 plt.show()

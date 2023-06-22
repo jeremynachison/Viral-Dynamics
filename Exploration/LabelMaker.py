@@ -32,7 +32,7 @@ def converge_check(xdata,ydata):
     condition1 = (sum(xtime_diff[-6:-1] < delta) == 5) and (sum(abs_cell_diff[-6:-1] < epsilon) == 5)
     condition2 = (sum(xtime_diff[-7:-2] < delta) == 5) and (sum(abs_cell_diff[-7:-2] < epsilon) == 5)
     if condition1 or condition2:
-        return "converges"
+        return "fast"
     else:
         return 0
     
@@ -54,18 +54,18 @@ def regression_check(xdata, ydata):
     # For curves where linear and exponential regression perform similarly, 
     # label as linear
     if abs(lin_r - exp_r) <= 0.01 and lin_pval < 0.001:
-        return "linear"
+        return "slow"
     # If exponential performs better than linear, label as exponential
     elif (exp_r > lin_r) and (exp_pval < 0.001):
-        return "exponential"
+        return "fast"
     # For remaining curves (linear performs better), if slope significant
     # label as linear
     elif lin_pval < 0.001:
-        return "linear"
+        return "slow"
     # for curves where slope is insignificant, label as constant
     else:
         # c stands for constant
-        return "constant"
+        return "slow"
 
 
 def LabelMaker(ID):

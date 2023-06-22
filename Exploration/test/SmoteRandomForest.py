@@ -11,14 +11,15 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from imblearn.over_sampling import SMOTE
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import confusion_matrix
 
 # Read in the relevant data
 
 # contains the coordinates of all peaks in each viral load curve
-xy_multi = pd.read_csv('Data/dense/d_xy_multi.csv', header=[0,1])
+xy_multi = pd.read_csv('Data/xy_multi.csv', header=[0,1])
 
 # contains the data of all particles by particle id
-param_df = pd.read_csv("Data/dense/d_param_df.csv",index_col=0)
+param_df = pd.read_csv("Data/param_df.csv",index_col=0)
 # change parameter ids to string, for consistency with xy_multi and tive_multi
 # this is to allow writing to feather, pickle , etc...
 param_df["id"] = param_df["id"].astype(str)
@@ -47,5 +48,22 @@ SMOTE_SRF.fit(over_X_train, over_y_train)
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.20, stratify=y)
 y_pred_s = SMOTE_SRF.score(X_test,y_test)
+
+# Compare to without SMOTE
+
+RF =  RandomForestClassifier(n_estimators=150, random_state=23)
+RF.fit(X_train, y_train)
+y_pred = RF.score(X_test,y_test)
+
+pred_class = RF.predict(X_test)
+
+pd.Series(pred_class).value_counts()
+pd.Series(y_test).value_counts()
+# Compare sensitivity
+
+tn, fp, fn, tp = confusion_matrix(y_test, pred_class).ravel()
+
+sensitivity = tp/(fp+fn)
+
 
 
